@@ -62,11 +62,10 @@ class RadioBrowserSkill(CommonPlaySkill):
     def __init__(self):
         super().__init__(name="RadioBrowser")
 
-    def CPS_match_query_phrase(selfself, phrase):
+    def CPS_match_query_phrase(self, phrase):
         search_phrase = phrase.lower()
 
-        if "a " and " station" in search_phrase
-
+        if "a " and " station" in search_phrase:
             return match_genre(search_phrase)
         else:
             return match_station_name(phrase)
@@ -78,11 +77,21 @@ class RadioBrowserSkill(CommonPlaySkill):
         LOG.info(f"Playing from {url}")
         self.audioservice.play(url)
 
-    @intent_file_handler('radio.station.intent')
-    def handle_radio_station(self, message):
-        matched_station = match_station_name(message.data['station'])
+    def handle_intent(self, message, type):
+        # Generic method for handling intents
+        matched_station = match_station_name(message.data[type])
         LOG.info(f"Playing from {matched_station[2]['url']}")
         self.CPS_play(matched_station[2]['url'])
+
+    @intent_file_handler('radio.station.intent')
+    def handle_radio_station(self, message):
+        # Handles requests for specific stations
+        self.handle_intent(self, message, 'station')
+
+    @intent_file_handler('radio.station.intent')
+    def handle_radio_genre(self, message):
+        # Handles requests for genres
+        self.handle_intent(self, message, 'genre')
 
     def initialize(self):
         self.add_event('mycroft.stop', self.stop)
