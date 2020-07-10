@@ -72,7 +72,11 @@ class RadioBrowserSkill(CommonPlaySkill):
             return match_station_name(phrase)
 
     def CPS_start(self, phrase, data):
-        pass
+        if self.audioservice.is_playing:
+            self.audioservice.stop()
+        url = data['url']
+        LOG.info(f"Playing from {url}")
+        self.audioservice.play(url)
 
     def initialize(self):
         self.add_event('mycroft.stop', self.stop)
