@@ -1,0 +1,9 @@
+dependencies:
+  python:
+    - re
+    - inflect
+    - pyradios
+    - word2number
+
+  system:
+    all: vlc
