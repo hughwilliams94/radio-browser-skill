@@ -86,12 +86,12 @@ class RadioBrowserSkill(CommonPlaySkill):
     @intent_file_handler('radio.station.intent')
     def handle_radio_station(self, message):
         # Handles requests for specific stations
-        self.handle_intent(self, message, 'station')
+        self.handle_intent(message, 'station')
 
-    @intent_file_handler('radio.station.intent')
+    @intent_file_handler('radio.genre.intent')
     def handle_radio_genre(self, message):
         # Handles requests for genres
-        self.handle_intent(self, message, 'genre')
+        self.handle_intent(message, 'genre')
 
     def initialize(self):
         self.add_event('mycroft.stop', self.stop)
