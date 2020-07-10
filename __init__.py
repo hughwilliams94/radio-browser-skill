@@ -40,13 +40,31 @@ def match_station_name(phrase):
         return None
 
 
+def match_genre(phrase):
+    # Strip 'a' and 'station' from phrases like 'Play a jazz station.' to get genre.
+    stripped_phrase = phrase.lower().replace('a ', '').replace(' station', '')
+    try:
+        rb = RadioBrowser()
+    except Exception as e:
+        LOG.exception('Failed to load pyradios' + repr(e))
+    LOG.info(f"Searching for a {stripped_phrase} station")
+    results = rb.search(tag=stripped_phrase, order="votes")
+    parsed_results = json.loads(json.dumps(results))
+
+    if len(parsed_results) > 0:
+        LOG.info(f"Found {parsed_results[0]['name']} URL: {parsed_results[0]['url_resolved']}")
+        return phrase, CPSMatchLevel.EXACT, {"url": parsed_results[0]['url_resolved']}
+    else:
+        match_station_name(phrase)
+
+
 class RadioBrowserSkill(CommonPlaySkill):
     def __init__(self):
         super().__init__(name="RadioBrowser")
 
     def CPS_match_query_phrase(selfself, phrase):
         pass
-    
+
     def CPS_start(self, phrase, data):
         pass
 
