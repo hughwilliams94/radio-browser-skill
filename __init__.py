@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-
 import re
 import json
 import inflect
+from mycroft import intent_file_handler
 
 from pyradios import RadioBrowser
 from word2number import w2n
@@ -77,6 +77,12 @@ class RadioBrowserSkill(CommonPlaySkill):
         url = data['url']
         LOG.info(f"Playing from {url}")
         self.audioservice.play(url)
+
+    @intent_file_handler('radio.station.intent')
+    def handle_radio_station(self, message):
+        matched_station = match_station_name(message.data['station'])
+        LOG.info(f"Playing from {matched_station[2]['url']}")
+        self.CPS_play(matched_station[2]['url'])
 
     def initialize(self):
         self.add_event('mycroft.stop', self.stop)
