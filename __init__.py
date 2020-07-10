@@ -63,7 +63,13 @@ class RadioBrowserSkill(CommonPlaySkill):
         super().__init__(name="RadioBrowser")
 
     def CPS_match_query_phrase(selfself, phrase):
-        pass
+        search_phrase = phrase.lower()
+
+        if "a " and " station" in search_phrase
+
+            return match_genre(search_phrase)
+        else:
+            return match_station_name(phrase)
 
     def CPS_start(self, phrase, data):
         pass
